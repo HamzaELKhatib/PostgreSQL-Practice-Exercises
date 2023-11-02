@@ -42,8 +42,13 @@ INNER JOIN rental AS r ON r.customer_id = c.customer_id
 GROUP BY c.customer_id, r.rental_date
 HAVING COUNT(rental_date) > 1
 ```
-- [ ] List all the movies that have not been rented yet.
+- [x] List all the movies that have not been rented yet.
 ```
+SELECT f.title
+FROM film f
+LEFT JOIN inventory i ON f.film_id = i.film_id
+LEFT JOIN rental r ON i.inventory_id = r.inventory_id
+WHERE r.rental_date IS NULL;
 ```
 - [ ] List all the customers who have rented a movie in the ‘Action’ category but not in the ‘Comedy’ category.
 ```
