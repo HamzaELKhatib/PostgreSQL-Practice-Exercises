@@ -34,8 +34,13 @@ INNER JOIN film_actor fa on a.actor_id = fa.actor_id
 GROUP BY a.actor_id
 HAVING COUNT(fa.film_id) > 20;
 ```
-- [ ] List all the customers who have rented a movie more than once in a single day.
+- [x] List all the customers who have rented a movie more than once in a single day.
 ```
+SELECT first_name, last_name, COUNT(r.rental_id)
+FROM customer AS c
+INNER JOIN rental AS r ON r.customer_id = c.customer_id
+GROUP BY c.customer_id, r.rental_date
+HAVING COUNT(rental_date) > 1
 ```
 - [ ] List all the movies that have not been rented yet.
 ```
