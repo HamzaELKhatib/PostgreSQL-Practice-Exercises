@@ -52,6 +52,25 @@ WHERE r.rental_date IS NULL;
 ```
 - [ ] List all the customers who have rented a movie in the ‘Action’ category but not in the ‘Comedy’ category.
 ```
+SELECT c.first_name, c.last_name
+FROM customer c
+JOIN rental r ON c.customer_id = r.customer_id
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON f.film_id = i.film_id
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category ca ON ca.category_id = fc.category_id
+WHERE ca.name = 'Action'
+AND c.customer_id NOT IN (
+    SELECT c2.customer_id
+    FROM customer c2
+    JOIN rental r2 ON c2.customer_id = r2.customer_id
+    JOIN inventory i2 ON r2.inventory_id = i2.inventory_id
+    JOIN film f2 ON f2.film_id = i2.film_id
+    JOIN film_category fc2 ON f2.film_id = fc2.film_id
+    JOIN category ca2 ON ca2.category_id = fc2.category_id
+    WHERE ca2.name = 'Comedy'
+)
+GROUP BY c.customer_id
 ```
 - [ ] List all the movies that have been rented more than 50 times.
 ```
