@@ -50,7 +50,7 @@ LEFT JOIN inventory i ON f.film_id = i.film_id
 LEFT JOIN rental r ON i.inventory_id = r.inventory_id
 WHERE r.rental_date IS NULL;
 ```
-- [ ] List all the customers who have rented a movie in the ‘Action’ category but not in the ‘Comedy’ category.
+- [x] List all the customers who have rented a movie in the ‘Action’ category but not in the ‘Comedy’ category.
 ```
 SELECT c.first_name, c.last_name
 FROM customer c
@@ -72,11 +72,24 @@ AND c.customer_id NOT IN (
 )
 GROUP BY c.customer_id
 ```
-- [ ] List all the movies that have been rented more than 50 times.
+- [x] List all the movies that have been rented more than 50 times.
 ```
+SELECT f.title
+FROM film AS f
+JOIN inventory i on f.film_id = i.film_id
+JOIN rental AS r ON i.inventory_id = r.inventory_id
+GROUP BY f.title
+HAVING count(rental_id) > 50
 ```
-- [ ] List all the movies that have been rented by a customer who has a first name starting with ‘J’.
+- [x] List all the movies that have been rented by a customer who has a first name starting with ‘J’.
 ```
+SELECT f.title
+FROM film AS f
+JOIN inventory AS i ON f.film_id = i.film_id
+JOIN rental AS r ON i.inventory_id = r.inventory_id
+JOIN customer AS c ON r.customer_id = c.customer_id
+WHERE c.first_name LIKE 'J%'
+GROUP BY f.title
 ```
 - [ ] List all the movies that have been rented more than once by the same customer.
 ```
