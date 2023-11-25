@@ -91,11 +91,21 @@ JOIN customer AS c ON r.customer_id = c.customer_id
 WHERE c.first_name LIKE 'J%'
 GROUP BY f.title
 ```
-- [ ] List all the movies that have been rented more than once by the same customer.
+- [x] List all the movies that have been rented more than once by the same customer.
 ```
+SELECT f.title
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+JOIN customer c ON r.customer_id = c.customer_id
+GROUP BY f.title, c.customer_id
+HAVING COUNT(r.rental_id) > 1
 ```
-- [ ] List all the movies that were released in 2006.
+- [x] List all the movies that were released in 2006.
 ```
+SELECT f.title
+FROM film f
+WHERE f.release_year = 2006
 ```
 - [ ] Find all customers who live in the same city as the ‘Sakila’ store.
 ```
