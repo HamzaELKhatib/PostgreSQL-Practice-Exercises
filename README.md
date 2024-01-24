@@ -14,13 +14,8 @@
 - [List all the movies that have been rented by a customer who has a first name starting with ‘J’.](#list-all-the-movies-that-have-been-rented-by-a-customer-who-has-a-first-name-starting-with-j)
 - [List all the movies that have been rented more than once by the same customer.](#list-all-the-movies-that-have-been-rented-more-than-once-by-the-same-customer)
 - [List all the movies that were released in 2006.](#list-all-the-movies-that-were-released-in-2006)
-- [Find all customers who live in the same city as the ‘Sakila’ store.](#find-all-customers-who-live-in-the-same-city-as-the-sakila-store)
-- [List all the languages available in the database.](#list-all-the-languages-available-in-the-database)
 - [Find all movies that are longer than 2 hours.](#find-all-movies-that-are-longer-than-2-hours)
-- [List all the categories available in the database.](#list-all-the-categories-available-in-the-database)
 - [Find all movies that are rated ‘PG-13’.](#find-all-movies-that-are-rated-pg-13)
-- [List all the stores and their addresses.](#list-all-the-stores-and-their-addresses)
-- [Find all customers who have a last name that starts with ‘A’.](#find-all-customers-who-have-a-last-name-that-starts-with-a)
 - [List all the films that have ‘Love’ in their title.](#list-all-the-films-that-have-love-in-their-title)
 - [Find all movies that were rented in the last 7 days.](#find-all-movies-that-were-rented-in-the-last-7-days)
 
@@ -190,14 +185,33 @@ SELECT f.title
 FROM film f
 WHERE f.release_year = 2006
 ```
-- [ ] <a id="list-all-the-languages-available-in-the-database"></a>List all the languages available in the database.
-- [ ] <a id="find-all-movies-that-are-longer-than-2-hours"></a>Find all movies that are longer than 2 hours.
-- [ ] <a id="list-all-the-categories-available-in-the-database"></a>List all the categories available in the database.
-- [ ] <a id="find-all-movies-that-are-rated-pg-13"></a>Find all movies that are rated ‘PG-13’.
-- [ ] <a id="list-all-the-stores-and-their-addresses"></a>List all the stores and their addresses.
-- [ ] <a id="find-all-customers-who-have-a-last-name-that-starts-with-a"></a>Find all customers who have a last name that starts with ‘A’.
-- [ ] <a id="list-all-the-films-that-have-love-in-their-title"></a>List all the films that have ‘Love’ in their title.
-- [ ] <a id="find-all-movies-that-were-rented-in-the-last-7-days"></a>Find all movies that were rented in the last 7 days.
+- [x] <a id="find-all-movies-that-are-longer-than-2-hours"></a>Find all movies that are longer than 2 hours.
+```
+SELECT f.title
+FROM film f
+WHERE f.length > 120
+```
+- [x] <a id="find-all-movies-that-are-rated-pg-13"></a>Find all movies that are rated ‘PG-13’.
+```
+SELECT f.title
+FROM film f
+WHERE f.rating = 'PG-13'
+```
+- [x] <a id="list-all-the-films-that-have-love-in-their-title"></a>List all the films that have ‘Love’ in their title.
+```
+SELECT f.title
+FROM film f
+WHERE f.title LIKE '%Love%'
+```
+- [x] <a id="find-all-movies-that-were-rented-in-the-last-7-days"></a>Find all movies that were rented in the last 7 days.
+```
+SELECT f.title
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+WHERE r.rental_date >= DATE '2005-05-24' - INTERVAL '7 days';
+-- WHERE r.rental_date >= DATE '2024-01-17' - INTERVAL '7 days';
+```
 
 ## [Intermediate](#intermediate)
 
