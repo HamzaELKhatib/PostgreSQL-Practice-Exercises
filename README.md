@@ -190,7 +190,6 @@ SELECT f.title
 FROM film f
 WHERE f.release_year = 2006
 ```
-- [ ] <a id="find-all-customers-who-live-in-the-same-city-as-the-sakila-store"></a>Find all customers who live in the same city as the ‘Sakila’ store.
 - [ ] <a id="list-all-the-languages-available-in-the-database"></a>List all the languages available in the database.
 - [ ] <a id="find-all-movies-that-are-longer-than-2-hours"></a>Find all movies that are longer than 2 hours.
 - [ ] <a id="list-all-the-categories-available-in-the-database"></a>List all the categories available in the database.
