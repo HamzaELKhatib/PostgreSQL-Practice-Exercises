@@ -215,7 +215,16 @@ WHERE r.rental_date >= DATE '2005-05-24' - INTERVAL '7 days';
 
 ## [Intermediate](#intermediate)
 
-- [ ] <a id="find-the-most-popular-movie-the-movie-that-has-been-rented-the-most"></a>Find the most popular movie (the movie that has been rented the most).
+- [x] <a id="find-the-most-popular-movie-the-movie-that-has-been-rented-the-most"></a>Find the most popular movie (the movie that has been rented the most).
+```
+SELECT f.title, COUNT(r.rental_id) AS rental_count
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+GROUP BY f.title
+ORDER BY rental_count DESC
+LIMIT 1
+```
 - [ ] <a id="find-the-total-sales-by-store"></a>Find the total sales by store.
 - [ ] <a id="find-the-top-5-customers-who-have-rented-the-most-movies"></a>Find the top 5 customers who have rented the most movies.
 - [ ] <a id="find-the-average-rental-duration-for-each-movie-category"></a>Find the average rental duration for each movie category.
