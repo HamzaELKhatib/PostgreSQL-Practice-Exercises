@@ -276,7 +276,14 @@ GROUP BY f.title
 ORDER BY rents DESC
 LIMIT 10
 ```
-- [ ] <a id="find-the-average-rental-duration-for-each-store"></a>Find the average rental duration for each store.
+- [x] <a id="find-the-average-rental-duration-for-each-store"></a>Find the average rental duration for each store.
+```
+SELECT s.store_id, AVG(r.return_date - r.rental_date) AS average_rental_duration
+FROM store AS s
+JOIN customer c on s.store_id = c.store_id
+JOIN rental r on c.customer_id = r.customer_id
+GROUP BY s.store_id
+```
 - [ ] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-city"></a>Find the customers who have rented the most number of movies in each city.
 - [ ] <a id="find-the-total-number-of-rentals-for-each-customer"></a>Find the total number of rentals for each customer.
 - [ ] <a id="find-the-total-number-of-movies-in-each-category"></a>Find the total number of movies in each category.
