@@ -263,7 +263,19 @@ JOIN payment p ON r.rental_id = p.rental_id
 GROUP BY c.name
 ORDER BY total_revenue desc
 ```
-- [ ] <a id="find-the-top-10-most-rented-movies-in-the-drama-category"></a>Find the top 10 most rented movies in the ‘Drama’ category.
+- [x] <a id="find-the-top-10-most-rented-movies-in-the-drama-category"></a>Find the top 10 most rented movies in the ‘Drama’ category.
+```
+SELECT f.title, count(r.rental_id) AS rents
+FROM film f
+JOIN inventory i on f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+JOIN film_category fc on f.film_id = fc.film_id
+JOIN category c on c.category_id = fc.category_id
+WHERE c.name = 'Drama'
+GROUP BY f.title
+ORDER BY rents DESC
+LIMIT 10
+```
 - [ ] <a id="find-the-average-rental-duration-for-each-store"></a>Find the average rental duration for each store.
 - [ ] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-city"></a>Find the customers who have rented the most number of movies in each city.
 - [ ] <a id="find-the-total-number-of-rentals-for-each-customer"></a>Find the total number of rentals for each customer.
