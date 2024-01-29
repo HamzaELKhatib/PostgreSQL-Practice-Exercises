@@ -284,7 +284,16 @@ JOIN customer c on s.store_id = c.store_id
 JOIN rental r on c.customer_id = r.customer_id
 GROUP BY s.store_id
 ```
-- [ ] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-city"></a>Find the customers who have rented the most number of movies in each city.
+- [x] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-city"></a>Find the customers who have rented the most number of movies in each city.
+```
+SELECT c.first_name, ct.city, COUNT(r.rental_id) AS number_of_rentals
+FROM city AS ct
+JOIN address a on ct.city_id = a.city_id
+JOIN customer c on a.address_id = c.address_id
+JOIN rental r on c.customer_id = r.customer_id
+GROUP BY c.first_name, ct.city
+ORDER BY number_of_rentals DESC
+```
 - [ ] <a id="find-the-total-number-of-rentals-for-each-customer"></a>Find the total number of rentals for each customer.
 - [ ] <a id="find-the-total-number-of-movies-in-each-category"></a>Find the total number of movies in each category.
 - [ ] <a id="find-the-most-rented-movie-in-each-category"></a>Find the most rented movie in each category.
