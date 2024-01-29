@@ -302,7 +302,14 @@ JOIN rental r on c.customer_id = r.customer_id
 GROUP BY c.first_name
 ORDER BY number_of_rentals DESC
 ```
-- [ ] <a id="find-the-total-number-of-movies-in-each-category"></a>Find the total number of movies in each category.
+- [x] <a id="find-the-total-number-of-movies-in-each-category"></a>Find the total number of movies in each category.
+```
+SELECT c.name, COUNT(fc.film_id) AS number_of_movies
+FROM category AS c
+JOIN film_category fc on c.category_id = fc.category_id
+GROUP BY c.name
+ORDER BY number_of_movies DESC
+```
 - [ ] <a id="find-the-most-rented-movie-in-each-category"></a>Find the most rented movie in each category.
 - [ ] <a id="find-the-total-sales-by-each-customer"></a>Find the total sales by each customer.
 - [ ] <a id="find-the-top-5-most-rented-movies-of-all-time"></a>Find the top 5 most rented movies of all time.
