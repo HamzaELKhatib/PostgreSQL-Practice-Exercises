@@ -310,7 +310,14 @@ JOIN film_category fc on c.category_id = fc.category_id
 GROUP BY c.name
 ORDER BY number_of_movies DESC
 ```
-- [ ] <a id="find-the-total-sales-by-each-customer"></a>Find the total sales by each customer.
+- [x] <a id="find-the-total-sales-by-each-customer"></a>Find the total sales by each customer.
+```
+SELECT c.first_name, c.last_name, sum(p.amount) AS total_sales
+FROM customer c
+JOIN payment p on c.customer_id = p.customer_id
+GROUP BY c.first_name, c.last_name
+ORDER BY total_sales DESC
+```
 - [ ] <a id="find-the-top-5-most-rented-movies-of-all-time"></a>Find the top 5 most rented movies of all time.
 - [ ] <a id="find-the-total-number-of-rentals-for-each-movie"></a>Find the total number of rentals for each movie.
 - [ ] <a id="list-all-customers-who-have-rented-a-movie-in-both-action-and-comedy-categories"></a>List all customers who have rented a movie in both ‘Action’ and ‘Comedy’ categories.
