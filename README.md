@@ -370,7 +370,16 @@ JOIN film_actor fa USING (film_id)
 JOIN actor a USING (actor_id)
 WHERE c.name = 'Sci-Fi'
 ```
-- [ ] <a id="find-the-top-5-customers-who-have-spent-the-most-on-rentals"></a>Find the top 5 customers who have spent the most on rentals.
+- [x] <a id="find-the-top-5-customers-who-have-spent-the-most-on-rentals"></a>Find the top 5 customers who have spent the most on rentals.
+```
+SELECT c.first_name, c.last_name, SUM(p.amount) AS spending
+FROM customer c
+JOIN rental r USING (customer_id)
+JOIN payment p USING (customer_id)
+GROUP BY c.first_name, c.last_name
+ORDER BY spending DESC
+LIMIT 5
+```
 - [ ] <a id="find-the-total-number-of-rentals-made-by-each-staff-member"></a>Find the total number of rentals made by each staff member.
 
 ## [Advanced](#advanced)
