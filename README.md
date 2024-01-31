@@ -360,7 +360,16 @@ WHERE EXTRACT(YEAR FROM p.payment_date) = '2006'
 GROUP BY s.store_id
 ORDER BY revenue DESC
 ```
-- [ ] <a id="list-all-actors-who-have-acted-in-a-science-fiction-movie"></a>List all actors who have acted in a ‘Science Fiction’ movie.
+- [x] <a id="list-all-actors-who-have-acted-in-a-science-fiction-movie"></a>List all actors who have acted in a ‘Science Fiction’ movie.
+```
+SELECT c.name, a.first_name, a.last_name
+FROM category c
+JOIN film_category fc USING (category_id)
+JOIN film f USING (film_id)
+JOIN film_actor fa USING (film_id)
+JOIN actor a USING (actor_id)
+WHERE c.name = 'Sci-Fi'
+```
 - [ ] <a id="find-the-top-5-customers-who-have-spent-the-most-on-rentals"></a>Find the top 5 customers who have spent the most on rentals.
 - [ ] <a id="find-the-total-number-of-rentals-made-by-each-staff-member"></a>Find the total number of rentals made by each staff member.
 
