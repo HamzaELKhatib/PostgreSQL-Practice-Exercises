@@ -380,7 +380,14 @@ GROUP BY c.first_name, c.last_name
 ORDER BY spending DESC
 LIMIT 5
 ```
-- [ ] <a id="find-the-total-number-of-rentals-made-by-each-staff-member"></a>Find the total number of rentals made by each staff member.
+- [x] <a id="find-the-total-number-of-rentals-made-by-each-staff-member"></a>Find the total number of rentals made by each staff member.
+```
+SELECT s.first_name, s.last_name, COUNT(p.payment_id) AS rentings
+FROM staff s
+JOIN payment p USING (staff_id)
+GROUP BY s.first_name, s.last_name
+ORDER BY rentings DESC
+```
 
 ## [Advanced](#advanced)
 
