@@ -402,7 +402,20 @@ GROUP BY f.title
 ORDER BY profits DESC
 LIMIT 5
 ```
-- [ ] <a id="list-all-the-customers-who-have-rented-a-movie-in-the-family-category-but-not-in-the-children-category"></a>List all the customers who have rented a movie in the ‘Family’ category but not in the ‘Children’ category.
+- [x] <a id="list-all-the-customers-who-have-rented-a-movie-in-the-family-category-but-not-in-the-children-category"></a>List all the customers who have rented a movie in the ‘Family’ category but not in the ‘Children’ category.
+```
+SELECT c.first_name, c.last_name, ct.name AS category
+FROM customer c
+JOIN public.rental r on c.customer_id = r.customer_id
+JOIN public.inventory i on i.inventory_id = r.inventory_id
+JOIN public.film f on f.film_id = i.film_id
+JOIN public.film_category fc on f.film_id = fc.film_id
+JOIN public.category ct on ct.category_id = fc.category_id
+WHERE ct.name = 'Family'
+AND ct.name != 'Children'
+GROUP BY c.first_name, c.last_name, ct.name
+ORDER BY c.first_name DESC
+```
 - [ ] <a id="find-the-average-rental-duration-for-each-actor"></a>Find the average rental duration for each actor.
 - [ ] <a id="list-all-the-movies-that-have-been-rented-by-a-customer-who-lives-in-a-city-with-a-population-greater-than-500000"></a>List all the movies that have been rented by a customer who lives in a city with a population greater than 500,000.
 - [ ] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-country"></a>Find the customers who have rented the most number of movies in each country.
