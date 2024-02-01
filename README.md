@@ -391,7 +391,17 @@ ORDER BY rentings DESC
 
 ## [Advanced](#advanced)
 
-- [ ] <a id="find-the-top-5-most-profitable-movies"></a>Find the top 5 most profitable movies.
+- [x] <a id="find-the-top-5-most-profitable-movies"></a>Find the top 5 most profitable movies.
+```
+SELECT f.title, sum(p.amount) AS profits
+FROM film f
+JOIN public.inventory i on f.film_id = i.film_id
+JOIN public.rental r on i.inventory_id = r.inventory_id
+JOIN public.payment p on r.rental_id = p.rental_id
+GROUP BY f.title
+ORDER BY profits DESC
+LIMIT 5
+```
 - [ ] <a id="list-all-the-customers-who-have-rented-a-movie-in-the-family-category-but-not-in-the-children-category"></a>List all the customers who have rented a movie in the ‘Family’ category but not in the ‘Children’ category.
 - [ ] <a id="find-the-average-rental-duration-for-each-actor"></a>Find the average rental duration for each actor.
 - [ ] <a id="list-all-the-movies-that-have-been-rented-by-a-customer-who-lives-in-a-city-with-a-population-greater-than-500000"></a>List all the movies that have been rented by a customer who lives in a city with a population greater than 500,000.
