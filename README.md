@@ -416,7 +416,17 @@ AND ct.name != 'Children'
 GROUP BY c.first_name, c.last_name, ct.name
 ORDER BY c.first_name DESC
 ```
-- [ ] <a id="find-the-average-rental-duration-for-each-actor"></a>Find the average rental duration for each actor.
+- [x] <a id="find-the-average-rental-duration-for-each-actor"></a>Find the average rental duration for each actor.
+```
+SELECT a.first_name, a.last_name, avg(r.return_date - r.rental_date) AS average_renting_duration
+FROM actor a
+JOIN public.film_actor fa on a.actor_id = fa.actor_id
+JOIN public.film f on f.film_id = fa.film_id
+JOIN public.inventory i on f.film_id = i.film_id
+JOIN public.rental r on i.inventory_id = r.inventory_id
+GROUP BY a.first_name, a.last_name
+ORDER BY average_renting_duration DESC 
+```
 - [ ] <a id="list-all-the-movies-that-have-been-rented-by-a-customer-who-lives-in-a-city-with-a-population-greater-than-500000"></a>List all the movies that have been rented by a customer who lives in a city with a population greater than 500,000.
 - [ ] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-country"></a>Find the customers who have rented the most number of movies in each country.
 - [ ] <a id="write-a-query-to-find-the-top-5-most-rented-movies-in-each-language-along-with-the-number-of-times-each-movie-has-been-rented"></a>Write a query to find the top 5 most rented movies in each language, along with the number of times each movie has been rented.
