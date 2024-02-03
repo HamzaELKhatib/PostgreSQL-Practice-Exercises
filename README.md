@@ -394,9 +394,9 @@ ORDER BY rentings DESC
 ```
 SELECT f.title, sum(p.amount) AS profits
 FROM film f
-JOIN public.inventory i on f.film_id = i.film_id
-JOIN public.rental r on i.inventory_id = r.inventory_id
-JOIN public.payment p on r.rental_id = p.rental_id
+         JOIN public.inventory i on f.film_id = i.film_id
+         JOIN public.rental r on i.inventory_id = r.inventory_id
+         JOIN public.payment p on r.rental_id = p.rental_id
 GROUP BY f.title
 ORDER BY profits DESC
 LIMIT 5
