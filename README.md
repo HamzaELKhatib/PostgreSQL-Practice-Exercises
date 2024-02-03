@@ -419,10 +419,10 @@ ORDER BY c.first_name DESC
 ```
 SELECT a.first_name, a.last_name, avg(r.return_date - r.rental_date) AS average_renting_duration
 FROM actor a
-JOIN public.film_actor fa on a.actor_id = fa.actor_id
-JOIN public.film f on f.film_id = fa.film_id
-JOIN public.inventory i on f.film_id = i.film_id
-JOIN public.rental r on i.inventory_id = r.inventory_id
+         JOIN public.film_actor fa on a.actor_id = fa.actor_id
+         JOIN public.film f on f.film_id = fa.film_id
+         JOIN public.inventory i on f.film_id = i.film_id
+         JOIN public.rental r on i.inventory_id = r.inventory_id
 GROUP BY a.first_name, a.last_name
 ORDER BY average_renting_duration DESC 
 ```
