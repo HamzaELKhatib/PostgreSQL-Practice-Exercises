@@ -405,13 +405,13 @@ LIMIT 5
 ```
 SELECT c.first_name, c.last_name, ct.name AS category
 FROM customer c
-JOIN public.rental r on c.customer_id = r.customer_id
-JOIN public.inventory i on i.inventory_id = r.inventory_id
-JOIN public.film f on f.film_id = i.film_id
-JOIN public.film_category fc on f.film_id = fc.film_id
-JOIN public.category ct on ct.category_id = fc.category_id
+         JOIN public.rental r on c.customer_id = r.customer_id
+         JOIN public.inventory i on i.inventory_id = r.inventory_id
+         JOIN public.film f on f.film_id = i.film_id
+         JOIN public.film_category fc on f.film_id = fc.film_id
+         JOIN public.category ct on ct.category_id = fc.category_id
 WHERE ct.name = 'Family'
-AND ct.name != 'Children'
+  AND ct.name != 'Children'
 GROUP BY c.first_name, c.last_name, ct.name
 ORDER BY c.first_name DESC
 ```
