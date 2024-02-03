@@ -428,25 +428,22 @@ ORDER BY average_renting_duration DESC
 ```
 - [x] <a id="find-the-customers-who-have-rented-the-most-number-of-movies-in-each-country"></a>Find the customers who have rented the most number of movies in each country.
 ```
-WITH customer_rentals AS (
-    SELECT c.customer_id, c.first_name, c.last_name, COUNT(r.rental_id) AS num_rentals
-    FROM customer c
-    JOIN rental r USING (customer_id)
-    GROUP BY c.customer_id
-),
-customer_countries AS (
-    SELECT c.customer_id, co.country
-    FROM customer c
-    JOIN address a USING (address_id)
-    JOIN city ci USING (city_id)
-    JOIN country co USING (country_id)
-),
-ranked_customers AS (
-    SELECT cc.country, cr.first_name, cr.last_name, cr.num_rentals,
-           RANK() OVER (PARTITION BY cc.country ORDER BY cr.num_rentals DESC) as rank
-    FROM customer_rentals cr
-    JOIN customer_countries cc USING (customer_id)
-)
+WITH customer_rentals AS (SELECT c.customer_id, c.first_name, c.last_name, COUNT(r.rental_id) AS num_rentals
+                          FROM customer c
+                                   JOIN rental r USING (customer_id)
+                          GROUP BY c.customer_id),
+     customer_countries AS (SELECT c.customer_id, co.country
+                            FROM customer c
+                                     JOIN address a USING (address_id)
+                                     JOIN city ci USING (city_id)
+                                     JOIN country co USING (country_id)),
+     ranked_customers AS (SELECT cc.country,
+                                 cr.first_name,
+                                 cr.last_name,
+                                 cr.num_rentals,
+                                 RANK() OVER (PARTITION BY cc.country ORDER BY cr.num_rentals DESC) as rank
+                          FROM customer_rentals cr
+                                   JOIN customer_countries cc USING (customer_id))
 SELECT country, first_name, last_name, num_rentals
 FROM ranked_customers
 WHERE rank = 1;
