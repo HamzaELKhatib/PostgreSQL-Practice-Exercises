@@ -689,7 +689,35 @@ FROM film_language_rank flr
 WHERE flr.rank <= 5
 ORDER BY flr.rating DESC
 ```
-- [ ] <a id="write-a-query-to-find-the-top-5-customers-who-have-rented-the-most-number-of-movies-in-each-rating-along-with-the-total-number-of-movies-rented-by-each-customer"></a>Write a query to find the top 5 customers who have rented the most number of movies in each rating, along with the total number of movies rented by each customer.
+- [x] <a id="write-a-query-to-find-the-top-5-customers-who-have-rented-the-most-number-of-movies-in-each-rating-along-with-the-total-number-of-movies-rented-by-each-customer"></a>Write a query to find the top 5 customers who have rented the most number of movies in each rating, along with the total number of movies rented by each customer.
+```
+WITH ratings AS (SELECT DISTINCT(f.rating), f.film_id
+                 FROM film f
+                 ORDER BY f.rating),
+
+     film_rental AS (SELECT rt.rating, c.first_name, c.last_name, count(r.rental_id) AS number_of_rentals
+                     FROM ratings rt
+                              JOIN film f USING (film_id)
+                              JOIN inventory i USING (film_id)
+                              JOIN rental r USING (inventory_id)
+                              JOIN customer c USING (customer_id)
+                     GROUP BY rt.rating, c.first_name, c.last_name),
+
+     film_rental_rank AS (SELECT fl.rating,
+                                 fl.first_name,
+                                 fl.last_name,
+                                 fl.number_of_rentals,
+                                 row_number() over (partition by fl.rating ORDER BY fl.number_of_rentals DESC) AS rank
+                          FROM film_rental fl)
+
+SELECT flr.rating,
+       flr.first_name,
+       flr.last_name,
+       flr.number_of_rentals
+FROM film_rental_rank flr
+WHERE flr.rank <= 5
+ORDER BY flr.rating DESC
+```
 - [ ] <a id="write-a-query-to-find-the-top-5-customers-who-have-rented-the-most-number-of-movies-in-each-language-along-with-the-total-number-of-movies-rented-by-each-customer"></a>Write a query to find the top 5 customers who have rented the most number of movies in each language, along with the total number of movies rented by each customer.
 - [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-cities"></a>Write a query to find out which actor’s films have been rented out by customers from different cities.
 - [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-countries"></a>Write a query to find out which category of films is most popular among customers from different countries.
