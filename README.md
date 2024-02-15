@@ -718,7 +718,39 @@ FROM film_rental_rank flr
 WHERE flr.rank <= 5
 ORDER BY flr.rating DESC
 ```
-- [ ] <a id="write-a-query-to-find-the-top-5-customers-who-have-rented-the-most-number-of-movies-in-each-language-along-with-the-total-number-of-movies-rented-by-each-customer"></a>Write a query to find the top 5 customers who have rented the most number of movies in each language, along with the total number of movies rented by each customer.
+- [x] <a id="write-a-query-to-find-the-top-5-customers-who-have-rented-the-most-number-of-movies-in-each-language-along-with-the-total-number-of-movies-rented-by-each-customer"></a>Write a query to find the top 5 customers who have rented the most number of movies in each language, along with the total number of movies rented by each customer.
+```
+WITH customer_rental AS (SELECT l.name, c.first_name, c.last_name, c.customer_id, count(f.film_id) AS number_of_rentals
+                         FROM language l
+                                  JOIN film f USING (language_id)
+                                  JOIN inventory i USING (film_id)
+                                  JOIN rental r USING (inventory_id)
+                                  JOIN customer c USING (customer_id)
+                         GROUP BY l.name, c.first_name, c.last_name, c.customer_id),
+
+     customer_rental_rank AS (SELECT cr.name,
+                                     cr.first_name,
+                                     cr.last_name,
+                                     cr.number_of_rentals,
+                                     cr.customer_id,
+                                     row_number() over (partition by cr.name ORDER BY cr.number_of_rentals DESC) AS rank
+                              FROM customer_rental cr),
+
+     customer_total_rentals AS (SELECT c.customer_id, count(r.rental_id) AS total_rentals
+                                FROM customer c
+                                         JOIN rental r USING (customer_id)
+                                GROUP BY c.customer_id)
+
+SELECT crr.name,
+       crr.first_name,
+       crr.last_name,
+       crr.number_of_rentals,
+       ctr.total_rentals
+FROM customer_rental_rank crr
+         JOIN customer_total_rentals ctr USING (customer_id)
+WHERE crr.rank <= 5
+ORDER BY ctr.total_rentals DESC
+```
 - [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-cities"></a>Write a query to find out which actor’s films have been rented out by customers from different cities.
 - [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-countries"></a>Write a query to find out which category of films is most popular among customers from different countries.
 
