@@ -751,7 +751,20 @@ FROM customer_rental_rank crr
 WHERE crr.rank <= 5
 ORDER BY ctr.total_rentals DESC
 ```
-- [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-cities"></a>Write a query to find out which actor’s films have been rented out by customers from different cities.
+- [x] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-cities"></a>Write a query to find out which actor’s films have been rented out by customers from different cities.
+```
+SELECT a.first_name, a.last_name, COUNT(DISTINCT ct.city_id) AS number_of_cities
+FROM actor a
+         JOIN film_actor fa USING (actor_id)
+         JOIN film f USING (film_id)
+         JOIN inventory i USING (film_id)
+         JOIN rental r USING (inventory_id)
+         JOIN customer c USING (customer_id)
+         JOIN address ad USING (address_id)
+         JOIN city ct USING (city_id)
+GROUP BY a.first_name, a.last_name
+ORDER BY number_of_cities DESC;
+```
 - [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-countries"></a>Write a query to find out which category of films is most popular among customers from different countries.
 
 ## [Expert](#expert)
