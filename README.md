@@ -765,7 +765,33 @@ FROM actor a
 GROUP BY a.first_name, a.last_name
 ORDER BY number_of_cities DESC;
 ```
-- [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-countries"></a>Write a query to find out which category of films is most popular among customers from different countries.
+- [x] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-countries"></a>Write a query to find out which category of films is most popular among customers from different countries.
+```
+WITH category_country AS (SELECT c.name, ctry.country, count(r.rental_id) AS rentals_num
+                          FROM category c
+                                   JOIN film_category fc USING (category_id)
+                                   JOIN film f USING (film_id)
+                                   JOIN inventory i USING (film_id)
+                                   JOIN rental r USING (inventory_id)
+                                   JOIN customer ctr USING (customer_id)
+                                   JOIN address a USING (address_id)
+                                   JOIN city ct USING (city_id)
+                                   JOIN country ctry USING (country_id)
+                          GROUP BY c.name, ctry.country),
+
+
+     category_profits_rank AS (SELECT cp.name,
+                                      cp.country,
+                                      cp.rentals_num,
+                                      ROW_NUMBER() OVER (PARTITION BY cp.country ORDER BY cp.rentals_num DESC) AS rank
+                               FROM category_country cp)
+
+
+SELECT cpr.name, cpr.country, cpr.rentals_num
+FROM category_profits_rank cpr
+WHERE cpr.rank = 1
+ORDER BY cpr.country DESC;
+```
 
 ## [Expert](#expert)
 
