@@ -890,7 +890,26 @@ SELECT city, total_revenue
 FROM ranked_stores
 WHERE rank <= 5;
 ```
-- [ ] <a id="write-a-query-to-find-out-which-month-had-the-highest-number-of-rentals-for-each-year"></a>Write a query to find out which month had the highest number of rentals for each year.
+- [x] <a id="write-a-query-to-find-out-which-month-had-the-highest-number-of-rentals-for-each-year"></a>Write a query to find out which month had the highest number of rentals for each year.
+```
+WITH rental_date AS (SELECT EXTRACT(MONTH FROM p.payment_date) AS month,
+                            EXTRACT(YEAR FROM p.payment_date)  AS year,
+                            COUNT(r.rental_id)                 AS times_rented
+                     FROM payment p
+                              JOIN rental r USING (rental_id)
+                     GROUP BY month, year),
+
+
+     rental_rank AS (SELECT rd.month,
+                            rd.year,
+                            rd.times_rented,
+                            row_number() over (partition by rd.year ORDER BY rd.times_rented DESC) AS rank
+                     FROM rental_date rd)
+
+SELECT rr.year, rr.month, rr.times_rented
+FROM rental_rank rr
+WHERE rr.rank = 1
+```
 - [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
 - [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-cities"></a>Write a query to find out which category of films is most popular among customers from different cities.
 - [ ] <a id="write-a-query-to-find-out-which-store-has-generated-more-revenue-from-comedy-films-than-action-films"></a>Write a query to find out which store has generated more revenue from comedy films than action films.
