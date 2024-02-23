@@ -910,7 +910,20 @@ SELECT rr.year, rr.month, rr.times_rented
 FROM rental_rank rr
 WHERE rr.rank = 1
 ```
-- [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
+- [x] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
+```
+SELECT DISTINCT c.country, a.first_name, a.last_name
+FROM country c
+         JOIN city c2 on c.country_id = c2.country_id
+         JOIN address ad on c2.city_id = ad.city_id
+         JOIN customer c3 on ad.address_id = c3.address_id
+         JOIN rental r on c3.customer_id = r.customer_id
+         JOIN inventory i on r.inventory_id = i.inventory_id
+         JOIN film f on i.film_id = f.film_id
+         JOIN film_actor fa on f.film_id = fa.film_id
+         JOIN actor a on a.actor_id = fa.actor_id
+ORDER BY first_name, last_name, country
+```
 - [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-cities"></a>Write a query to find out which category of films is most popular among customers from different cities.
 - [ ] <a id="write-a-query-to-find-out-which-store-has-generated-more-revenue-from-comedy-films-than-action-films"></a>Write a query to find out which store has generated more revenue from comedy films than action films.
 - [ ] <a id="write-a-query-to-find-out-which-country-has-generated-more-revenue-from-drama-films-than-comedy-films"></a>Write a query to find out which country has generated more revenue from drama films than comedy films.
