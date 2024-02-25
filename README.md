@@ -949,7 +949,37 @@ FROM category_rank
 WHERE rank = 1
 ORDER BY city
 ```
-- [ ] <a id="write-a-query-to-find-out-which-store-has-generated-more-revenue-from-comedy-films-than-action-films"></a>Write a query to find out which store has generated more revenue from comedy films than action films.
+- [x] <a id="write-a-query-to-find-out-which-store-has-generated-more-revenue-from-comedy-films-than-action-films"></a>Write a query to find out which store has generated more revenue from comedy films than action films.
+```
+WITH comedy_revenue AS (SELECT s.manager_staff_id, SUM(p.amount) AS revenue
+                        FROM store s
+                                 JOIN staff s2 on s2.staff_id = s.manager_staff_id
+                                 JOIN payment p on s2.staff_id = p.staff_id
+                                 JOIN rental r on p.rental_id = r.rental_id
+                                 JOIN inventory i on r.inventory_id = i.inventory_id
+                                 JOIN film f on f.film_id = i.film_id
+                                 JOIN film_category fc on f.film_id = fc.film_id
+                                 JOIN category c on c.category_id = fc.category_id
+                        WHERE c.name = 'Comedy'
+                        GROUP BY s.manager_staff_id),
+
+     action_revenue AS (SELECT s.manager_staff_id, SUM(p.amount) AS revenue
+                        FROM store s
+                                 JOIN staff s2 on s2.staff_id = s.manager_staff_id
+                                 JOIN payment p on s2.staff_id = p.staff_id
+                                 JOIN rental r on p.rental_id = r.rental_id
+                                 JOIN inventory i on r.inventory_id = i.inventory_id
+                                 JOIN film f on f.film_id = i.film_id
+                                 JOIN film_category fc on f.film_id = fc.film_id
+                                 JOIN category c on c.category_id = fc.category_id
+                        WHERE c.name = 'Action'
+                        GROUP BY s.manager_staff_id)
+
+SELECT manager_staff_id
+FROM comedy_revenue cv
+         JOIN action_revenue av USING (manager_staff_id)
+WHERE cv.revenue > av.revenue
+```
 - [ ] <a id="write-a-query-to-find-out-which-country-has-generated-more-revenue-from-drama-films-than-comedy-films"></a>Write a query to find out which country has generated more revenue from drama films than comedy films.
 - [ ] <a id="write-a-query-to-find-out-which-month-had-the-highest-number-of-rentals-for-each-category"></a>Write a query to find out which month had the highest number of rentals for each category.
 - [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries-2"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
