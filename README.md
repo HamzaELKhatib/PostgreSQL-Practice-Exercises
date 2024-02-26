@@ -980,7 +980,41 @@ FROM comedy_revenue cv
          JOIN action_revenue av USING (manager_staff_id)
 WHERE cv.revenue > av.revenue
 ```
-- [ ] <a id="write-a-query-to-find-out-which-country-has-generated-more-revenue-from-drama-films-than-comedy-films"></a>Write a query to find out which country has generated more revenue from drama films than comedy films.
+- [x] <a id="write-a-query-to-find-out-which-country-has-generated-more-revenue-from-drama-films-than-comedy-films"></a>Write a query to find out which country has generated more revenue from drama films than comedy films.
+```
+WITH drama_revenue AS (SELECT c2.country, SUM(p2.amount) AS revenue
+                       FROM country c2
+                                JOIN city c3 on c2.country_id = c3.country_id
+                                JOIN address a on c3.city_id = a.city_id
+                                JOIN staff s3 on a.address_id = s3.address_id
+                                JOIN payment p2 on s3.staff_id = p2.staff_id
+                                JOIN rental r2 on r2.rental_id = p2.rental_id
+                                JOIN inventory i2 on i2.inventory_id = r2.inventory_id
+                                JOIN film f2 on f2.film_id = i2.film_id
+                                JOIN film_category fc2 on f2.film_id = fc2.film_id
+                                JOIN category c4 on c4.category_id = fc2.category_id
+                       WHERE c4.name = 'Drama'
+                       GROUP BY c2.country),
+
+     comedy_revenue AS (SELECT c2.country, SUM(p2.amount) AS revenue
+                        FROM country c2
+                                 JOIN city c3 on c2.country_id = c3.country_id
+                                 JOIN address a on c3.city_id = a.city_id
+                                 JOIN staff s3 on a.address_id = s3.address_id
+                                 JOIN payment p2 on s3.staff_id = p2.staff_id
+                                 JOIN rental r2 on r2.rental_id = p2.rental_id
+                                 JOIN inventory i2 on i2.inventory_id = r2.inventory_id
+                                 JOIN film f2 on f2.film_id = i2.film_id
+                                 JOIN film_category fc2 on f2.film_id = fc2.film_id
+                                 JOIN category c4 on c4.category_id = fc2.category_id
+                        WHERE c4.name = 'Comedy'
+                        GROUP BY c2.country)
+
+SELECT d.country
+FROM drama_revenue d
+         JOIN comedy_revenue c USING (country)
+WHERE d.revenue > c.revenue
+```
 - [ ] <a id="write-a-query-to-find-out-which-month-had-the-highest-number-of-rentals-for-each-category"></a>Write a query to find out which month had the highest number of rentals for each category.
 - [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries-2"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
 - [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-cities-2"></a>Write a query to find out which category of films is most popular among customers from different cities.
