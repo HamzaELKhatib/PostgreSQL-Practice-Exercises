@@ -1052,7 +1052,31 @@ FROM actor a
          JOIN country c3 on c3.country_id = c2.country_id
 ORDER BY a.first_name, a.last_name, c3.country
 ```
-- [ ] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-cities-2"></a>Write a query to find out which category of films is most popular among customers from different cities.
+- [x] <a id="write-a-query-to-find-out-which-category-of-films-is-most-popular-among-customers-from-different-cities-2"></a>Write a query to find out which category of films is most popular among customers from different cities.
+```
+WITH category_city AS (SELECT c3.name, c2.city, count(r.rental_id) AS times_rented
+                       FROM category c3
+                                INNER JOIN film_category fc USING (category_id)
+                                INNER JOIN film f USING (film_id)
+                                INNER JOIN inventory i USING (film_id)
+                                INNER JOIN rental r USING (inventory_id)
+                                INNER JOIN customer c USING (customer_id)
+                                INNER JOIN address a2 USING (address_id)
+                                INNER JOIN city c2 USING (city_id)
+                       GROUP BY c3.name, c2.city
+                       ORDER BY c3.name, c2.city),
+
+     category_city_rank AS (SELECT name,
+                                   city,
+                                   times_rented,
+                                   row_number() over (partition by city ORDER BY times_rented DESC) AS rank
+                            FROM category_city)
+
+SELECT city, name, times_rented
+FROM category_city_rank
+WHERE rank = 1
+ORDER BY city
+```
 - [ ] <a id="write-a-query-to-find-out-which-store-has-generated-more-revenue-from-comedy-films-than-action-films-2"></a>Write a query to find out which store has generated more revenue from comedy films than action films.
 - [ ] <a id="write-a-query-to-find-out-which-country-has-generated-more-revenue-from-drama-films-than-comedy-films-2"></a>Write a query to find out which country has generated more revenue from drama films than comedy films.
 - [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries-3"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
