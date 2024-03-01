@@ -1077,6 +1077,3 @@ FROM category_city_rank
 WHERE rank = 1
 ORDER BY city
 ```
-- [ ] <a id="write-a-query-to-find-out-which-store-has-generated-more-revenue-from-comedy-films-than-action-films-2"></a>Write a query to find out which store has generated more revenue from comedy films than action films.
-- [ ] <a id="write-a-query-to-find-out-which-country-has-generated-more-revenue-from-drama-films-than-comedy-films-2"></a>Write a query to find out which country has generated more revenue from drama films than comedy films.
-- [ ] <a id="write-a-query-to-find-out-which-actors-films-have-been-rented-out-by-customers-from-different-countries-3"></a>Write a query to find out which actor’s films have been rented out by customers from different countries.
