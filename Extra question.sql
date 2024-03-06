@@ -76,6 +76,21 @@ FROM city_rank
 WHERE rank <= 5
 ORDER BY city;
 -- Write a query to find out which month had the lowest number of rentals for each year.
+WITH month_rentals AS (SELECT extract(MONTH FROM payment_date) AS month,
+                              extract(YEAR FROM payment_date)  AS year,
+                              count(rental_id)                 AS times_rented
+                       FROM payment p
+                       GROUP BY month, year),
+
+     rental_ranks AS (SELECT month,
+                             year,
+                             times_rented,
+                             row_number() over (PARTITION BY year ORDER BY times_rented ASC) AS rank
+                      FROM month_rentals)
+
+SELECT month, year, times_rented
+FROM rental_ranks
+WHERE rank = 1
 -- Write a query to find out which store has generated less revenue from action films than comedy films.
 -- Write a query to find out which country has generated less revenue from comedy films than drama films.
 -- Write a query to find out which actor’s films have been rented out the least by customers from different countries.
