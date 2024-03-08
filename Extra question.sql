@@ -120,6 +120,39 @@ FROM action_rentals ar
          JOIN comedy_rentals cr USING (store_id)
 WHERE ar.revenue < cr.revenue;
 -- Write a query to find out which country has generated less revenue from comedy films than drama films.
+WITH action_rentals AS (SELECT co.country, co.country_id, sum(p.amount) as revenue
+                        FROM category c
+                                 JOIN film_category USING (category_id)
+                                 JOIN film USING (film_id)
+                                 JOIN inventory USING (film_id)
+                                 JOIN rental USING (inventory_id)
+                                 JOIN payment p USING (rental_id)
+                                 JOIN staff st USING (store_id)
+                                 JOIN address a USING (address_id)
+                                 JOIN city ci USING (city_id)
+                                 JOIN country co USING (country_id)
+                        WHERE c.name = 'Action'
+                        GROUP BY co.country, co.country_id),
+
+     comedy_rentals AS (SELECT co.country, co.country_id, sum(p.amount) as revenue
+                        FROM category c
+                                 JOIN film_category USING (category_id)
+                                 JOIN film USING (film_id)
+                                 JOIN inventory USING (film_id)
+                                 JOIN rental USING (inventory_id)
+                                 JOIN payment p USING (rental_id)
+                                 JOIN staff st USING (store_id)
+                                 JOIN address a USING (address_id)
+                                 JOIN city ci USING (city_id)
+                                 JOIN country co USING (country_id)
+                        WHERE c.name = 'Action'
+                        GROUP BY co.country, co.country_id)
+
+
+SELECT ar.country
+FROM action_rentals ar
+         JOIN comedy_rentals cr USING (country_id)
+WHERE ar.revenue < cr.revenue;
 -- Write a query to find out which actor’s films have been rented out the least by customers from different countries.
 -- Write a query to find out which category of films is least popular among customers from different countries.
 -- Write a query to find out which store has generated less revenue from action films than comedy films.
