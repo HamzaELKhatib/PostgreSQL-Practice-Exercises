@@ -154,6 +154,31 @@ FROM action_rentals ar
          JOIN comedy_rentals cr USING (country_id)
 WHERE ar.revenue < cr.revenue;
 -- Write a query to find out which actor’s films have been rented out the least by customers from different countries.
+WITH actor_rentals AS (SELECT a.first_name, a.last_name, title, co.country, count(rental_id) as times_rented
+                       FROM actor a
+                                JOIN film_actor USING (actor_id)
+                                JOIN film USING (film_id)
+                                JOIN inventory USING (film_id)
+                                JOIN rental USING (inventory_id)
+                                JOIN customer c USING (customer_id)
+                                JOIN address USING (address_id)
+                                JOIN city ci USING (city_id)
+                                JOIN country co USING (country_id)
+                       GROUP BY a.first_name, a.last_name, title, co.country),
+
+     rental_rank AS (SELECT first_name,
+                            last_name,
+                            title,
+                            country,
+                            times_rented,
+                            row_number() over (partition by country order by times_rented ASC) as rank
+                     FROM actor_rentals)
+
+
+SELECT first_name, last_name, title, country, times_rented
+FROM rental_rank
+WHERE rank = 1
+ORDER BY country;
 -- Write a query to find out which category of films is least popular among customers from different countries.
 -- Write a query to find out which store has generated less revenue from action films than comedy films.
 -- Write a query to find out which country has generated less revenue from comedy films than drama films.
