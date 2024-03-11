@@ -145,7 +145,7 @@ WITH action_rentals AS (SELECT co.country, co.country_id, sum(p.amount) as reven
                                  JOIN address a USING (address_id)
                                  JOIN city ci USING (city_id)
                                  JOIN country co USING (country_id)
-                        WHERE c.name = 'Action'
+                        WHERE c.name = 'Comedy'
                         GROUP BY co.country, co.country_id)
 
 
