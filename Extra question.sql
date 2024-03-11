@@ -204,6 +204,35 @@ FROM rental_rank
 WHERE rank = 1
 ORDER BY country;
 -- Write a query to find out which store has generated less revenue from action films than comedy films.
+WITH action_rentals AS (SELECT s.manager_staff_id, sum(p.amount) as revenue
+                        FROM category c
+                                 JOIN film_category USING (category_id)
+                                 JOIN film USING (film_id)
+                                 JOIN inventory USING (film_id)
+                                 JOIN rental USING (inventory_id)
+                                 JOIN payment p USING (rental_id)
+                                 JOIN staff st USING (store_id)
+                                 JOIN store s USING (store_id)
+                        WHERE c.name = 'Action'
+                        GROUP BY s.manager_staff_id),
+
+     comedy_rentals AS (SELECT s.manager_staff_id, sum(p.amount) as revenue
+                        FROM category c
+                                 JOIN film_category USING (category_id)
+                                 JOIN film USING (film_id)
+                                 JOIN inventory USING (film_id)
+                                 JOIN rental USING (inventory_id)
+                                 JOIN payment p USING (rental_id)
+                                 JOIN staff st USING (store_id)
+                                 JOIN store s USING (store_id)
+                        WHERE c.name = 'Comedy'
+                        GROUP BY s.manager_staff_id)
+
+
+SELECT manager_staff_id
+FROM action_rentals ar
+         JOIN comedy_rentals cr USING (manager_staff_id)
+WHERE ar.revenue < cr.revenue;
 -- Write a query to find out which country has generated less revenue from comedy films than drama films.
 -- Write a query to find out which actor’s films have been rented out the least by customers from different countries.
 -- Find the top 5 actors who have acted in the most number of unique categories.
