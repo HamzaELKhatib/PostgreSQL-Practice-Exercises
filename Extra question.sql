@@ -268,6 +268,30 @@ FROM action_rentals ar
          JOIN comedy_rentals cr USING (country_id)
 WHERE ar.revenue < cr.revenue;
 -- Write a query to find out which actor’s films have been rented out the least by customers from different countries.
+WITH actor_rentals AS (SELECT a.first_name, a.last_name, count(rental_id) as times_rented
+                       FROM actor a
+                                JOIN film_actor USING (actor_id)
+                                JOIN film USING (film_id)
+                                JOIN inventory USING (film_id)
+                                JOIN rental USING (inventory_id)
+                                JOIN customer c USING (customer_id)
+                                JOIN address USING (address_id)
+                                JOIN city ci USING (city_id)
+                                JOIN country co USING (country_id)
+                       GROUP BY a.first_name, a.last_name, title, co.country),
+
+     rental_rank AS (SELECT first_name,
+                            last_name,
+                            times_rented,
+                            row_number() over (partition by first_name, last_name order by times_rented ASC) as rank
+                     FROM actor_rentals)
+
+SELECT first_name,
+       last_name,
+       times_rented
+FROM rental_rank
+WHERE rank = 1
+ORDER BY times_rented;
 -- Find the top 5 actors who have acted in the most number of unique categories.
 -- Find the top 5 customers who have rented movies from the most number of unique categories.
 -- Find the top 5 stores with the highest average rental rate for their movies.
