@@ -293,6 +293,17 @@ FROM rental_rank
 WHERE rank = 1
 ORDER BY times_rented;
 -- Find the top 5 actors who have acted in the most number of unique categories.
+SELECT a.first_name,
+       a.last_name,
+       COUNT(DISTINCT c.category_id) as unique_categorie_number
+FROM actor a
+         JOIN film_actor fa ON a.actor_id = fa.actor_id
+         JOIN film_category fc ON fa.film_id = fc.film_id
+         JOIN category c ON fc.category_id = c.category_id
+GROUP BY a.first_name, a.last_name
+ORDER BY unique_categories DESC
+LIMIT 5;
+
 -- Find the top 5 customers who have rented movies from the most number of unique categories.
 -- Find the top 5 stores with the highest average rental rate for their movies.
 -- Find the top 5 cities with the highest average rental rate for their movies.
