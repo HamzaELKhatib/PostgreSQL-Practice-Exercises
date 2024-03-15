@@ -301,10 +301,21 @@ FROM actor a
          JOIN film_category fc ON fa.film_id = fc.film_id
          JOIN category c ON fc.category_id = c.category_id
 GROUP BY a.first_name, a.last_name
-ORDER BY unique_categories DESC
+ORDER BY unique_categorie_number DESC
 LIMIT 5;
-
 -- Find the top 5 customers who have rented movies from the most number of unique categories.
+SELECT c.first_name,
+       c.last_name,
+       COUNT(DISTINCT ct.category_id) as unique_categorie_number
+FROM customer c
+         JOIN rental r USING (customer_id)
+         JOIN inventory i USING (inventory_id)
+         JOIN film f USING (film_id)
+         JOIN film_category fc ON f.film_id = fc.film_id
+         JOIN category ct ON fc.category_id = ct.category_id
+GROUP BY c.first_name, c.last_name
+ORDER BY unique_categorie_number DESC
+LIMIT 5;
 -- Find the top 5 stores with the highest average rental rate for their movies.
 -- Find the top 5 cities with the highest average rental rate for their movies.
 -- Find the top 5 countries with the highest average rental rate for their movies.
