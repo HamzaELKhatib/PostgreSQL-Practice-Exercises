@@ -317,6 +317,13 @@ GROUP BY c.first_name, c.last_name
 ORDER BY unique_categorie_number DESC
 LIMIT 5;
 -- Find the top 5 stores with the highest average rental rate for their movies.
+SELECT st.address_id, avg(p.amount) AS average_rate
+FROM payment p
+         JOIN staff s USING (staff_id)
+         JOIN store st USING (store_id)
+GROUP BY st.address_id
+ORDER BY average_rate DESC
+LIMIT 5;
 -- Find the top 5 cities with the highest average rental rate for their movies.
 -- Find the top 5 countries with the highest average rental rate for their movies.
 -- Find the top 5 languages that have the highest average rental rate for their movies.
