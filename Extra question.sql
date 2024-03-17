@@ -325,6 +325,14 @@ GROUP BY st.address_id
 ORDER BY average_rate DESC
 LIMIT 5;
 -- Find the top 5 cities with the highest average rental rate for their movies.
+SELECT c.city, avg(p.amount) AS average_rate
+FROM payment p
+         JOIN staff s USING (staff_id)
+         JOIN address a USING (address_id)
+         JOIN city c USING (city_id)
+GROUP BY c.city
+ORDER BY average_rate DESC
+LIMIT 5;
 -- Find the top 5 countries with the highest average rental rate for their movies.
 -- Find the top 5 languages that have the highest average rental rate for their movies.
 -- Find the top 5 ratings that have the highest average rental rate for their movies.
