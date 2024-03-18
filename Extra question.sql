@@ -334,6 +334,15 @@ GROUP BY c.city
 ORDER BY average_rate DESC
 LIMIT 5;
 -- Find the top 5 countries with the highest average rental rate for their movies.
+SELECT c.country, avg(p.amount) AS average_rate
+FROM payment p
+         JOIN staff s USING (staff_id)
+         JOIN address a USING (address_id)
+         JOIN city ct USING (city_id)
+         JOIN country c USING (country_id)
+GROUP BY c.country
+ORDER BY average_rate DESC
+LIMIT 5;
 -- Find the top 5 languages that have the highest average rental rate for their movies.
 -- Find the top 5 ratings that have the highest average rental rate for their movies.
 -- Find the top 5 actors who have acted in movies with the highest average rental rate.
