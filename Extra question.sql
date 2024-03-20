@@ -354,6 +354,11 @@ GROUP BY l.name
 ORDER BY average_rate DESC
 LIMIT 5;
 -- Find the top 5 ratings that have the highest average rental rate for their movies.
+SELECT DISTINCT rating, AVG(rental_rate) AS average_rental_rate
+FROM film
+group by rating
+ORDER BY average_rental_rate DESC
+LIMIT 5;
 -- Find the top 5 actors who have acted in movies with the highest average rental rate.
 -- Find the top 5 categories with the highest average rental rate for their movies.
 -- Find the top 5 customers who have rented movies with the highest average rental rate.
