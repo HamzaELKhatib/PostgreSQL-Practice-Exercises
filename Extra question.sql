@@ -368,6 +368,13 @@ group by a.first_name, a.last_name
 ORDER BY average_rental_rate DESC
 LIMIT 5;
 -- Find the top 5 categories with the highest average rental rate for their movies.
+SELECT DISTINCT c.name, AVG(rental_rate) AS average_rental_rate
+FROM film
+         JOIN film_category fc USING (film_id)
+         JOIN category c USING (category_id)
+group by c.name
+ORDER BY average_rental_rate DESC
+LIMIT 5;
 -- Find the top 5 customers who have rented movies with the highest average rental rate.
 -- Find the top 5 stores that have the most number of unique customers.
 -- Find the top 5 cities that have the most number of unique customers.
