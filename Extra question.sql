@@ -376,6 +376,14 @@ group by c.name
 ORDER BY average_rental_rate DESC
 LIMIT 5;
 -- Find the top 5 customers who have rented movies with the highest average rental rate.
+SELECT DISTINCT cu.first_name, cu.last_name, AVG(rental_rate) AS average_rental_rate
+FROM film
+         JOIN inventory i USING (film_id)
+         JOIN rental r USING (inventory_id)
+         JOIN customer cu USING (customer_id)
+group by cu.first_name, cu.last_name
+ORDER BY average_rental_rate DESC
+LIMIT 5;
 -- Find the top 5 stores that have the most number of unique customers.
 -- Find the top 5 cities that have the most number of unique customers.
 -- Find the top 5 countries that have the most number of unique customers.
