@@ -385,6 +385,13 @@ group by cu.first_name, cu.last_name
 ORDER BY average_rental_rate DESC
 LIMIT 5;
 -- Find the top 5 stores that have the most number of unique customers.
+SELECT DISTINCT s.address_id, count(cu.customer_id) AS number_of_customers
+FROM store s
+         JOIN staff st USING (store_id)
+         JOIN customer cu USING (store_id)
+group by s.address_id
+ORDER BY number_of_customers DESC
+LIMIT 5;
 -- Find the top 5 cities that have the most number of unique customers.
 -- Find the top 5 countries that have the most number of unique customers.
 -- Find the top 5 languages that have the most number of unique customers.
