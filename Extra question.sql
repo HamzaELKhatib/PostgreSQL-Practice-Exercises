@@ -393,6 +393,13 @@ group by s.address_id
 ORDER BY number_of_customers DESC
 LIMIT 5;
 -- Find the top 5 cities that have the most number of unique customers.
+SELECT DISTINCT c.city, count(cu.customer_id) AS number_of_customers
+FROM city c
+         JOIN address a USING (city_id)
+         JOIN customer cu USING (address_id)
+group by c.city
+ORDER BY number_of_customers DESC
+LIMIT 5;
 -- Find the top 5 countries that have the most number of unique customers.
 -- Find the top 5 languages that have the most number of unique customers.
 -- Find the top 5 ratings that have the most number of unique customers.
