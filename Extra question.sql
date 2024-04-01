@@ -462,6 +462,15 @@ group by c.first_name, c.last_name
 ORDER BY number_of_actors DESC
 LIMIT 5;
 -- Find the top 5 customers who have rented movies in the most number of unique languages.
+SELECT DISTINCT c.first_name, c.last_name, count(l.language_id) AS number_of_languages
+FROM customer c
+         JOIN rental r USING (customer_id)
+         JOIN inventory i USING (inventory_id)
+         JOIN film f USING (film_id)
+         JOIN language l USING (language_id)
+group by c.first_name, c.last_name
+ORDER BY number_of_languages DESC
+LIMIT 5;
 -- Find the top 5 customers who have rented movies with the most number of unique ratings.
 -- Find the actor who has acted in the most number of films in each language.
 -- Find the customer who has rented the most number of films in each rating.
