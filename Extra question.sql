@@ -481,6 +481,24 @@ group by c.first_name, c.last_name
 ORDER BY number_of_ratings DESC
 LIMIT 5;
 -- Find the actor who has acted in the most number of films in each language.
+WITH actor_language AS (SELECT l.name, a.first_name, a.last_name, COUNT(f.film_id) AS film_count
+                        FROM actor a
+                                 JOIN film_actor fa USING (actor_id)
+                                 JOIN film f USING (film_id)
+                                 JOIN language l USING (language_id)
+                        GROUP BY a.first_name, a.last_name, l.name
+                        ORDER BY film_count DESC),
+
+     actor_language_rank AS (SELECT name,
+                                    first_name,
+                                    last_name,
+                                    film_count,
+                                    row_number() over (partition by name order by film_count desc) AS rank
+                             FROM actor_language)
+
+SELECT name, first_name, last_name, film_count
+FROM actor_language_rank
+WHERE rank = 1
 -- Find the customer who has rented the most number of films in each rating.
 -- Find the store that has the most rentals in each month of the year.
 -- Find the category of films that has the most rentals in each store.
