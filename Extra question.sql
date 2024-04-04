@@ -498,8 +498,27 @@ WITH actor_language AS (SELECT l.name, a.first_name, a.last_name, COUNT(f.film_i
 
 SELECT name, first_name, last_name, film_count
 FROM actor_language_rank
-WHERE rank = 1
+WHERE rank = 1;
 -- Find the customer who has rented the most number of films in each rating.
+WITH customer_ratings AS (SELECT f.rating, c.first_name, c.last_name, COUNT(f.film_id) AS film_count
+                          FROM customer c
+                                   JOIN rental r USING (customer_id)
+                                   JOIN inventory i USING (inventory_id)
+                                   JOIN film f USING (film_id)
+                          GROUP BY c.first_name, c.last_name, f.rating
+                          ORDER BY film_count DESC),
+
+     customer_ratings_rank AS (SELECT rating,
+                                      first_name,
+                                      last_name,
+                                      film_count,
+                                      row_number() over (partition by rating order by film_count desc) AS rank
+                               FROM customer_ratings)
+
+SELECT rating, first_name, last_name, film_count
+FROM customer_ratings_rank
+WHERE rank = 1
+ORDER BY rating DESC;
 -- Find the store that has the most rentals in each month of the year.
 -- Find the category of films that has the most rentals in each store.
 -- Find the film that has been rented the most in each city.
