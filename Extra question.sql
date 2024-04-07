@@ -563,6 +563,32 @@ FROM store_rentals_rank
 WHERE rank = 1
 ORDER BY month DESC;
 -- Find the film that has been rented the most in each city.
+WITH city_rentals AS (SELECT f.title,
+                             ci.city,
+                             count(r.rental_id) AS film_count
+                      FROM film f
+
+                               JOIN inventory i USING (film_id)
+                               JOIN rental r USING (inventory_id)
+                               JOIN customer c USING (customer_id)
+                               JOIN address a USING (address_id)
+                               JOIN city ci USING (city_id)
+
+                      GROUP BY f.title, ci.city
+                      ORDER BY film_count DESC),
+
+     city_rentals_rank AS (SELECT title,
+                                  city,
+                                  film_count,
+                                  row_number() over (partition by city order by film_count desc) AS rank
+                           FROM city_rentals)
+
+SELECT title,
+       city,
+       film_count
+FROM city_rentals_rank
+WHERE rank = 1
+ORDER BY city;
 -- Find the actor whose films have the highest average rental rate.
 -- Find the customer who has rented films with the highest total rental rate.
 -- Find the month that has the highest total rental rate for each year.
