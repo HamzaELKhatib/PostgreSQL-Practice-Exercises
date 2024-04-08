@@ -590,6 +590,16 @@ FROM city_rentals_rank
 WHERE rank = 1
 ORDER BY city;
 -- Find the actor whose films have the highest average rental rate.
+SELECT a.first_name, a.last_name, avg(p.amount)
+FROM actor a
+         JOIN film_actor fa USING (actor_id)
+         JOIN film f USING (film_id)
+         JOIN inventory i USING (film_id)
+         JOIN rental r USING (inventory_id)
+         JOIN payment p USING (rental_id)
+GROUP BY a.first_name, a.last_name
+ORDER BY avg(p.amount) DESC
+LIMIT 1;
 -- Find the customer who has rented films with the highest total rental rate.
 -- Find the month that has the highest total rental rate for each year.
 -- Find the city that has the highest average rental duration for its films.
