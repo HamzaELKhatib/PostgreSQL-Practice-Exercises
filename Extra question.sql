@@ -601,6 +601,15 @@ GROUP BY a.first_name, a.last_name
 ORDER BY avg(p.amount) DESC
 LIMIT 1;
 -- Find the customer who has rented films with the highest total rental rate.
+SELECT c.first_name, c.last_name, f.title, SUM(p.amount) AS total_spent
+FROM customer c
+         JOIN payment p USING (customer_id)
+         JOIN rental r USING (customer_id)
+         JOIN inventory i USING (inventory_id)
+         JOIN film f USING (film_id)
+GROUP BY c.first_name, c.last_name, f.title
+ORDER BY total_spent DESC
+LIMIT 1;
 -- Find the month that has the highest total rental rate for each year.
 -- Find the city that has the highest average rental duration for its films.
 -- Find the actor who has acted in films with the highest total length.
