@@ -611,6 +611,25 @@ GROUP BY c.first_name, c.last_name, f.title
 ORDER BY total_spent DESC
 LIMIT 1;
 -- Find the month that has the highest total rental rate for each year.
+WITH store_rentals AS (SELECT extract(MONTH from payment_date) AS month,
+                              extract(YEAR from payment_date)  AS year,
+                              sum(amount)                      AS total_rent_rate
+                       FROM payment p
+                       GROUP BY payment_date
+                       ORDER BY total_rent_rate DESC),
+
+     store_rentals_rank AS (SELECT month,
+                                   year,
+                                   total_rent_rate,
+                                   row_number() over (partition by year order by total_rent_rate desc) AS rank
+                            FROM store_rentals)
+
+SELECT month,
+       year,
+       total_rent_rate
+FROM store_rentals_rank
+WHERE rank = 1
+ORDER BY month DESC;
 -- Find the city that has the highest average rental duration for its films.
 -- Find the actor who has acted in films with the highest total length.
 -- Find the customer who has rented films with the highest total length.
