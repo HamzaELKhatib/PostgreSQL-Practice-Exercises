@@ -641,6 +641,35 @@ ORDER BY month DESC;
 -- Find the country that has the highest average length for its films.
 -- Find the month that has the highest average length for its films.
 -- Find the actor whose films have been rented the most in each city.
+WITH store_rentals AS (SELECT a.first_name,
+                              a.last_name,
+                              ci.city,
+                              count(r.rental_id) AS times_rented
+                       FROM actor a
+                                JOIN film_actor fa USING (actor_id)
+                                JOIN film f USING (film_id)
+                                JOIN inventory i USING (film_id)
+                                JOIN rental r USING (inventory_id)
+                                JOIN customer c USING (customer_id)
+                                JOIN address ad USING (address_id)
+                                JOIN city ci USING (city_id)
+                       group by a.first_name, a.last_name, ci.city
+                       ORDER BY times_rented DESC),
+
+     store_rentals_rank AS (SELECT first_name,
+                                   last_name,
+                                   city,
+                                   times_rented,
+                                   row_number() over (partition by city order by times_rented desc) AS rank
+                            FROM store_rentals)
+
+SELECT first_name,
+       last_name,
+       city,
+       times_rented
+FROM store_rentals_rank
+WHERE rank = 1
+ORDER BY city DESC;
 -- Find the category of films that is most popular among customers from different stores.
 
 -- Final Boss
