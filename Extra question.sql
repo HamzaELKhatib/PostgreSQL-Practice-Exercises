@@ -671,7 +671,33 @@ FROM store_rentals_rank
 WHERE rank = 1
 ORDER BY city DESC;
 -- Find the category of films that is most popular among customers from different stores.
+WITH store_rentals AS (SELECT c.name,
+                              s.address_id,
+                              count(c.category_id) AS number_od_films_in_category
+                       FROM category c
+                                JOIN film_category fc USING (category_id)
+                                JOIN film f USING (film_id)
+                                JOIN inventory i USING (film_id)
+                                JOIN rental r USING (inventory_id)
+                                JOIN payment p USING (rental_id)
+                                JOIN staff st USING (store_id)
+                                JOIN store s USING (store_id)
 
+                       group by s.address_id, c.name),
+
+     store_rentals_rank AS (SELECT name,
+                                   address_id,
+                                   number_od_films_in_category,
+                                   row_number()
+                                   over (partition by address_id order by number_od_films_in_category desc) AS rank
+                            FROM store_rentals)
+
+SELECT name,
+       address_id,
+       number_od_films_in_category
+FROM store_rentals_rank
+WHERE rank = 1
+ORDER BY number_od_films_in_category DESC;
 -- Final Boss
 -- Write a query to identify the top 5 customers who have rented the most diverse range of films in terms of categories, considering that diversity is measured by the number of unique combinations of categories rented by each customer.
 
