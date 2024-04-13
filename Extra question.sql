@@ -631,6 +631,25 @@ FROM store_rentals_rank
 WHERE rank = 1
 ORDER BY month DESC;
 -- Find the city that has the highest average rental duration for its films.
+WITH city_rental_duration AS (SELECT c.city, avg(r.return_date - r.rental_date) AS average_rental_length
+                              FROM city c
+                                       JOIN address a USING (city_id)
+                                       JOIN customer ct USING (address_id)
+                                       JOIN rental r USING (customer_id)
+                              group by c.city),
+
+     city_rental_duration_rank AS (SELECT city,
+                                          average_rental_length,
+                                          row_number()
+                                          over (partition by city order by average_rental_length desc) AS rank
+                                   FROM city_rental_duration)
+
+SELECT city,
+       average_rental_length
+FROM city_rental_duration_rank
+WHERE rank = 1
+ORDER BY average_rental_length DESC
+LIMIT 1;
 -- Find the actor who has acted in films with the highest total length.
 -- Find the customer who has rented films with the highest total length.
 -- Find the category of films that has the highest average length.
