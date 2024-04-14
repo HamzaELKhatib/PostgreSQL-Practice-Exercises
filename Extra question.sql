@@ -651,6 +651,13 @@ WHERE rank = 1
 ORDER BY average_rental_length DESC
 LIMIT 1;
 -- Find the actor who has acted in films with the highest total length.
+SELECT a.first_name, a.last_name, sum(f.length) as total_length
+FROM actor a
+         JOIN film_actor fa USING (actor_id)
+         JOIN film f USING (film_id)
+GROUP BY a.first_name, a.last_name
+ORDER BY total_length DESC
+LIMIT 1;
 -- Find the customer who has rented films with the highest total length.
 -- Find the category of films that has the highest average length.
 -- Find the language that has the highest average length for its films.
