@@ -659,6 +659,14 @@ GROUP BY a.first_name, a.last_name
 ORDER BY total_length DESC
 LIMIT 1;
 -- Find the customer who has rented films with the highest total length.
+SELECT a.first_name, a.last_name, sum(f.length) as total_length
+FROM customer a
+         JOIN rental r USING (customer_id)
+         JOIN inventory i USING (inventory_id)
+         JOIN film f USING (film_id)
+GROUP BY a.first_name, a.last_name
+ORDER BY total_length DESC
+LIMIT 1;
 -- Find the category of films that has the highest average length.
 -- Find the language that has the highest average length for its films.
 -- Find the rating that has the highest average length for its films.
