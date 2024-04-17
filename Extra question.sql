@@ -668,14 +668,12 @@ GROUP BY a.first_name, a.last_name
 ORDER BY total_length DESC
 LIMIT 1;
 -- Find the category of films that has the highest average length.
-SELECT c.name, avg(r.return_date - r.rental_date) AS average_rental_length
+SELECT c.name, avg(f.length) AS average_film_length
 FROM category c
          JOIN film_category fc USING (category_id)
          JOIN film f USING (film_id)
-         JOIN inventory i USING (film_id)
-         JOIN rental r USING (inventory_id)
 GROUP BY c.name
-ORDER BY average_rental_length DESC
+ORDER BY average_film_length DESC
 LIMIT 1;
 -- Find the language that has the highest average length for its films.
 -- Find the rating that has the highest average length for its films.
