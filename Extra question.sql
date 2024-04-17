@@ -676,6 +676,12 @@ GROUP BY c.name
 ORDER BY average_film_length DESC
 LIMIT 1;
 -- Find the language that has the highest average length for its films.
+SELECT l.name, avg(f.length) AS average_film_length
+FROM language l
+         JOIN film f USING (language_id)
+GROUP BY l.name
+ORDER BY average_film_length DESC
+LIMIT 1;
 -- Find the rating that has the highest average length for its films.
 -- Find the store that has the highest average length for its films.
 -- Find the city that has the highest average length for its films.
