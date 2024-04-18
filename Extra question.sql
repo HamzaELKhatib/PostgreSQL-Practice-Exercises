@@ -683,6 +683,11 @@ GROUP BY l.name
 ORDER BY average_film_length DESC
 LIMIT 1;
 -- Find the rating that has the highest average length for its films.
+SELECT f.rating, avg(f.length) AS average_film_length
+FROM film f
+GROUP BY f.rating
+ORDER BY average_film_length DESC
+LIMIT 1;
 -- Find the store that has the highest average length for its films.
 -- Find the city that has the highest average length for its films.
 -- Find the country that has the highest average length for its films.
