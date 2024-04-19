@@ -689,6 +689,15 @@ GROUP BY f.rating
 ORDER BY average_film_length DESC
 LIMIT 1;
 -- Find the store that has the highest average length for its films.
+SELECT s.address_id, a.address, avg(f.length) AS average_film_length
+FROM film f
+         JOIN inventory USING (film_id)
+         JOIN rental USING (inventory_id)
+         JOIN store s USING (store_id)
+         JOIN address a ON a.address_id = s.address_id
+GROUP BY s.address_id, a.address
+ORDER BY average_film_length DESC
+LIMIT 1;
 -- Find the city that has the highest average length for its films.
 -- Find the country that has the highest average length for its films.
 -- Find the month that has the highest average length for its films.
