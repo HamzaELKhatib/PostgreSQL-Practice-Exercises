@@ -710,6 +710,17 @@ GROUP BY c.city
 ORDER BY average_film_length DESC
 LIMIT 1;
 -- Find the country that has the highest average length for its films.
+SELECT c.country, avg(f.length) AS average_film_length
+FROM film f
+         JOIN inventory USING (film_id)
+         JOIN rental USING (inventory_id)
+         JOIN store s USING (store_id)
+         JOIN address a ON a.address_id = s.address_id
+         JOIN city ct ON a.city_id = ct.city_id
+         JOIN country c ON ct.country_id = c.country_id
+GROUP BY c.country
+ORDER BY average_film_length DESC
+LIMIT 1;
 -- Find the month that has the highest average length for its films.
 -- Find the actor whose films have been rented the most in each city.
 WITH store_rentals AS (SELECT a.first_name,
