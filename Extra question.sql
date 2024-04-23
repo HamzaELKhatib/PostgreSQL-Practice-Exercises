@@ -789,7 +789,18 @@ WHERE rank = 1
 ORDER BY number_od_films_in_category DESC;
 -- Final Boss
 -- Write a query to identify the top 5 customers who have rented the most diverse range of films in terms of categories, considering that diversity is measured by the number of unique combinations of categories rented by each customer.
-
+SELECT cu.first_name,
+       cu.last_name,
+       count(DISTINCT c.category_id) as diversity
+FROM category c
+         JOIN film_category fc ON c.category_id = fc.category_id
+         JOIN film f ON fc.film_id = f.film_id
+         JOIN inventory i ON f.film_id = i.film_id
+         JOIN rental r ON i.inventory_id = r.inventory_id
+         JOIN customer cu ON r.customer_id = cu.customer_id
+group by cu.first_name, cu.last_name
+ORDER BY diversity DESC
+LIMIT 5;
 -- Create a query to find the top 5 actors whose films have been rented out the least across all countries, excluding actors who have appeared in less than 10 films.
 
 -- Implement a query to find the top 5 customers who have rented movies with the highest total rental rate per category, considering the rental rate of each movie.
