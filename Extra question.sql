@@ -802,7 +802,25 @@ group by cu.first_name, cu.last_name
 ORDER BY diversity DESC
 LIMIT 5;
 -- Create a query to find the top 5 actors whose films have been rented out the least across all countries, excluding actors who have appeared in less than 10 films.
+WITH ACTORS_LESS_THAN_10_FILMS AS (SELECT a.actor_id, COUNT(f.film_id) AS movie_count
+                                   FROM actor a
+                                            JOIN film_actor USING (actor_id)
+                                            JOIN film f USING (film_id)
+                                   GROUP BY a.actor_id
+                                   HAVING COUNT(f.film_id) >= 10)
 
+SELECT a.first_name,
+       a.last_name,
+       COUNT(r.rental_id) AS rent_count
+FROM actor a
+         JOIN film_actor USING (actor_id)
+         JOIN film f USING (film_id)
+         JOIN inventory USING (film_id)
+         JOIN rental r USING (inventory_id)
+WHERE a.actor_id IN (SELECT actor_id FROM ACTORS_LESS_THAN_10_FILMS)
+GROUP BY a.actor_id
+ORDER BY rent_count
+LIMIT 5;
 -- Implement a query to find the top 5 customers who have rented movies with the highest total rental rate per category, considering the rental rate of each movie.
 
 -- Develop a query to find the top 5 cities where customers have the highest average rental duration for films belonging to categories with a "Parental Guidance" rating (PG).
