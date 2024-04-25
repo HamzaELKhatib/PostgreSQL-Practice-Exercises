@@ -822,7 +822,16 @@ GROUP BY a.actor_id
 ORDER BY rent_count
 LIMIT 5;
 -- Implement a query to find the top 5 customers who have rented movies with the highest total rental rate per category, considering the rental rate of each movie.
-
+SELECT c.name, cu.first_name, cu.last_name, sum(f.rental_rate) AS total_rent_rate
+FROM category c
+         JOIN film_category USING (category_id)
+         JOIN film f USING (film_id)
+         JOIN inventory USING (film_id)
+         JOIN rental USING (inventory_id)
+         JOIN customer cu USING (customer_id)
+GROUP BY c.category_id, cu.first_name, cu.last_name
+ORDER BY total_rent_rate DESC
+LIMIT 5;
 -- Develop a query to find the top 5 cities where customers have the highest average rental duration for films belonging to categories with a "Parental Guidance" rating (PG).
 
 -- Write a query to find the top 5 actors whose films have the highest average rental rate in countries where English is not the primary language spoken.
