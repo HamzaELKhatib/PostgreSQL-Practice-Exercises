@@ -832,8 +832,18 @@ FROM category c
 GROUP BY c.category_id, cu.first_name, cu.last_name
 ORDER BY total_rent_rate DESC
 LIMIT 5;
--- Develop a query to find the top 5 cities where customers have the highest average rental duration for films belonging to categories with a "Parental Guidance" rating (PG).
-
+-- Develop a query to find the top 5 cities where customers have the highest average rental duration for films with a "Parental Guidance" rating (PG).
+SELECT c.city, avg(f.rental_duration) as avg_rental_duration
+FROM city c
+         JOIN address USING (city_id)
+         JOIN customer USING (address_id)
+         JOIN rental USING (customer_id)
+         JOIN inventory USING (inventory_id)
+         JOIN film f USING (film_id)
+WHERE f.rating = 'PG'
+GROUP BY c.city
+ORDER BY avg_rental_duration DESC
+LIMIT 5;
 -- Write a query to find the top 5 actors whose films have the highest average rental rate in countries where English is not the primary language spoken.
 
 -- Create a query to find the top 5 customers who have rented movies with the highest total rental rate per language, considering the rental rate of each movie.
